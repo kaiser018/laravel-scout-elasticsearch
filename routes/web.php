@@ -10,7 +10,22 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Articles\ArticlesRepository;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('posts.index', [
+        'posts' => App\Post::all(),
+    ]);
 });
+
+Route::get('/search', function () {
+    $posts = App\Post::search(request('q'))->get();
+
+    return view('posts.index', [
+        'posts' => $posts,
+    ]);
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
